@@ -20,6 +20,7 @@ switch($uc){
 		include("controleurs/c_etatFrais.php");break; 
 	}
 }
+// test
 include("vues/v_pied.php") ;
 ?>
 
