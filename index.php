@@ -22,8 +22,11 @@ switch($uc){
 	case 'etatFrais' :{
 		include("controleurs/c_etatFrais.php");break; 
 	}
+	case 'validerfrais' :{
+		include("controleurs/c_validerfrais.php");break; 
+	}
 }
-// test
+// teste
 include("vues/v_pied.php") ;
 ?>
 

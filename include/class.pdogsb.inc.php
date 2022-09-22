@@ -61,6 +61,13 @@ class PdoGsb{
 		return $ligne;
 	}
 
+	public function getAllVisiteurs() {
+		$req = "SELECT utilisateur.nom as nom, utilisateur.prenom as prenom FROM utilisateur";
+		$rs = PdoGsb::$monPdo->query($req);
+		$ligne = $rs->fetch();
+		return $ligne;
+	}
+
 /**
  * Retourne sous forme d'un tableau associatif toutes les lignes de frais hors forfait
  * concernées par les deux arguments

@@ -16,7 +16,7 @@
             <?php if($_SESSION['role'] == "Visiteur") { ?>
               <a href="index.php?uc=gererFrais&action=saisirFrais" title="Saisie fiche de frais ">Saisie fiche de frais</a>
             <?php } elseif($_SESSION['role'] == "Comptable") { ?>
-               <a href="index.php?uc=validerfrais&action=saisirFrais" title="Valider les fiches de frais">Valider les fiches de frais</a>
+               <a href="index.php?uc=validerfrais&action=validationFrais" title="Valider les fiches de frais">Valider les fiches de frais</a>
             <?php } ?>
            </li>
            <li class="smenu">

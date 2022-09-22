@@ -176,6 +176,7 @@ function valideInfosFrais($dateFrais,$libelle,$montant){
 			ajouterErreur("Le champ montant doit être numérique");
 		}
 }
+
 /**
  * Ajoute le libellé d'une erreur au tableau des erreurs 
  
