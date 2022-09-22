@@ -12,7 +12,7 @@ switch($action){
 		$login = $_REQUEST['login'];
 		$mdp = $_REQUEST['mdp'];
 		$utilisateur = $pdo->getInfosUtilisateur($login,$mdp);
-		if(!is_array( $utilisateur)){
+		if(!is_array($utilisateur)){
 			ajouterErreur("Login ou mot de passe incorrect");
 			include("vues/v_erreurs.php");
 			include("vues/v_connexion.php");
@@ -22,7 +22,7 @@ switch($action){
 			$nom =  $utilisateur['nom'];
 			$prenom = $utilisateur['prenom'];
 			$role = $utilisateur["role"];
-			connecter($id,$nom,$prenom);
+			connecter($id,$nom,$prenom, $role);
 			include("vues/v_sommaire.php");
 		}
 		break;
