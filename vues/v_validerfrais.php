@@ -1,24 +1,42 @@
-<div id="contenu">
-    <h2>Validation des fiches de frais</h2>
+<?php if ($etat) { ?>
     <div class="corpsform">
         <fieldset>
-            <legend>Visiteur et mois à sélectionner</legend>
+            <legend>Fiche de frais du mois <?= $numMois_visiteur ?>/<?= $numAnnee_visiteur ?></legend>
+
+            <p>Etat : <?= $etat["libelle"] ?> depuis le <?= $date_fiche ?> <br> Montant validé : <?= $etat["montant"] ?></p>
+
+            <table class="listeLegere" style="width: 100%;">
+                <h3>Eléments forfatisés</h3>
+                <tr>
+                    <?php
+                    foreach ($lesFraisForfait as $unFraisForfait) {
+                        $libelle = $unFraisForfait['libelle'];
+                    ?>
+                        <th><?= $libelle ?></th>
+                    <?php } ?>
+                </tr>
+                <tr>
+                    <?php
+                    foreach ($lesFraisForfait as $unFraisForfait) {
+                        $quantite = $unFraisForfait['quantite'];
+                    ?>
+                        <td><input type="text" value="<?= $quantite ?>" style="width: 93px;"></td>
+                    <?php
+                    }
+                    ?>
+                </tr>
+            </table>
+            <div class="piedForm" style="width: 100%;border: 0;">
             <p>
-        <label for="lstvisiteur" accesskey="n">Visiteur : </label>
-        <select id="lstvisiteur" name="lstvisiteur">
-            <?php foreach($visiteurs as $v) { ?>
-            <option value="202209">09/2022 </option>
-            <?php } ?>
-        </select><br>
-        
-      </p>
-      <p>
-        <label for="lstMois" accesskey="n">Mois : </label>
-        <select id="lstMois" name="lstMois">
-            <option selected="" value="202209">09/2022 </option>
-            <option value="202112">12/2021 </option>
-        </select>
-</p>
+                <input id="ok" type="submit" name="validerfrais" value="Valider" size="20">
+                <input id="annuler" type="reset" value="Effacer" size="20">
+            </p>
+        </div>
         </fieldset>
     </div>
+<?php } else { ?>
+    <div class="erreur">
+        <p>Cette fiche n'existe pas pour ce visiteur et pour ce mois</p>
+    </div>
+<?php } ?>
 </div>

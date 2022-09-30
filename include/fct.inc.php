@@ -53,12 +53,7 @@ function dateAnglaisVersFrancais($maDate){
    $date="$jour"."/".$mois."/".$annee;
    return $date;
 }
-/**
- * retourne le mois au format aaaamm selon le jour dans le mois
- 
- * @param $date au format  jj/mm/aaaa
- * @return le mois au format aaaamm
-*/
+
 function getMois($date){
 		@list($jour,$mois,$annee) = explode('/',$date);
 		if(strlen($mois) == 1){
