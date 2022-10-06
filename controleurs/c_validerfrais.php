@@ -12,10 +12,12 @@ switch ($action) {
             break;
         }
     case "validationFrais": {
-
             $visiteurs = $pdo->getAllVisiteurs();
             $mois = $pdo->getAllMoisIsset();
             $mois_visiteur = $_POST["mois"];
+
+            var_dump($_REQUEST);
+            var_dump($_POST);
 
             $etat = $pdo->getEtatFicheUtilisateur($_POST["visiteur"], $mois_visiteur);
 
@@ -26,6 +28,8 @@ switch ($action) {
                 $numMois_visiteur = substr($mois_visiteur, 4, 2);
 
                 $lesFraisForfait= $pdo->getLesFraisForfait($_POST["visiteur"],$mois_visiteur);
+
+                $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($_POST["visiteur"],$mois_visiteur);
 
                 $infos_visiteur = $pdo->getInfosUtilisateurByID($_POST["visiteur"]);
             }

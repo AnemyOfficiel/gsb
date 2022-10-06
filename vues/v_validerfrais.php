@@ -27,11 +27,30 @@
                 </tr>
             </table>
             <div class="piedForm" style="width: 100%;border: 0;">
-            <p>
-                <input id="ok" type="submit" name="validerfrais" value="Valider" size="20">
-                <input id="annuler" type="reset" value="Effacer" size="20">
-            </p>
-        </div>
+                <p>
+                    <input id="ok" type="submit" name="validerfrais" value="Valider" size="20">
+                    <input id="annuler" type="reset" value="Effacer" size="20">
+                </p>
+            </div>
+            <table class="listeLegere" style="width: 100%;border: 0;">
+                <caption>Descriptif des éléments hors forfait - <input type="text" name="justificatifs" value="<?= $etat["nbJ"] ?>"> justificatifs reçus -
+                </caption>
+                <tr>
+                    <th class="date">Date</th>
+                    <th class="libelle">Libellé</th>
+                    <th class='montant'>Montant</th>
+                    <th class="action" colspan="2">Action</th>
+                </tr>
+                <?php foreach($lesFraisHorsForfait as $unFraisHorsForfait) { ?>
+                <tr>
+                    <td><?= $unFraisHorsForfait["date"] ?></td>
+                    <td><?= $unFraisHorsForfait["libelle"] ?></td>
+                    <td><?= $unFraisHorsForfait["montant"] ?></td>
+                    <td><a href="">Supprimer</a></td>
+                    <td><a href="">Reporter</a></td>
+                </tr>
+                <?php } ?>
+            </table>
         </fieldset>
     </div>
 <?php } else { ?>

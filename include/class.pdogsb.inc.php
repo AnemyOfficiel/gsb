@@ -84,7 +84,7 @@ class PdoGsb{
 	}
 
 	public function getEtatFicheUtilisateur($idUtilisateur, $mois) {
-		$req = "SELECT ff.idEtat as idEtat, e.libelle as libelle, ff.dateModif as datefiche, ff.montantValide as montant FROM fichefrais as ff, etat as e WHERE ff.idVisiteur = '$idUtilisateur' AND ff.mois = '$mois' AND ff.idEtat = e.id";
+		$req = "SELECT ff.idEtat as idEtat, e.libelle as libelle, ff.dateModif as datefiche, ff.montantValide as montant, ff.nbJustificatifs as nbJ FROM fichefrais as ff, etat as e WHERE ff.idVisiteur = '$idUtilisateur' AND ff.mois = '$mois' AND ff.idEtat = e.id";
 		$rs = PdoGsb::$monPdo->query($req);
 		$ligne = $rs->fetch();
 		return $ligne;
