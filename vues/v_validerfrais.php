@@ -41,13 +41,16 @@
                     <th class='montant'>Montant</th>
                     <th class="action" colspan="2">Action</th>
                 </tr>
+                
                 <?php foreach($lesFraisHorsForfait as $unFraisHorsForfait) { ?>
-                <tr>
+                <tr <?php if($unFraisHorsForfait["suppr"]) { ?>style="background-color: #f43535;" <?php } ?>>
                     <td><?= $unFraisHorsForfait["date"] ?></td>
-                    <td><?= $unFraisHorsForfait["libelle"] ?></td>
+                    <td><?php if($unFraisHorsForfait["suppr"]) { ?>REFUSE : <?php } ?><?= $unFraisHorsForfait["libelle"] ?></td>
                     <td><?= $unFraisHorsForfait["montant"] ?></td>
-                    <td><a href="">Supprimer</a></td>
-                    <td><a href="">Reporter</a></td>
+                    <?php if(!$unFraisHorsForfait["suppr"]) { ?>
+                    <td><a href="index.php?uc=validerfrais&action=supprimerHorsForfait&idFrais=<?= $unFraisHorsForfait["id"] ?>">Supprimer</a></td>
+                    <td><a href="index.php?uc=validerfrais&action=reporterHorsForfait&idFrais=<?= $unFraisHorsForfait["id"] ?>">Reporter</a></td>
+                    <?php } ?>
                 </tr>
                 <?php } ?>
             </table>

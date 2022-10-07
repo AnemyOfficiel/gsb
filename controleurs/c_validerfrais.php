@@ -16,9 +16,6 @@ switch ($action) {
             $mois = $pdo->getAllMoisIsset();
             $mois_visiteur = $_POST["mois"];
 
-            var_dump($_REQUEST);
-            var_dump($_POST);
-
             $etat = $pdo->getEtatFicheUtilisateur($_POST["visiteur"], $mois_visiteur);
 
             if ($etat) {
@@ -27,13 +24,19 @@ switch ($action) {
                 $numAnnee_visiteur = substr($mois_visiteur, 0, 4);
                 $numMois_visiteur = substr($mois_visiteur, 4, 2);
 
-                $lesFraisForfait= $pdo->getLesFraisForfait($_POST["visiteur"],$mois_visiteur);
+                $lesFraisForfait = $pdo->getLesFraisForfait($_POST["visiteur"], $mois_visiteur);
 
-                $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($_POST["visiteur"],$mois_visiteur);
+                $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($_POST["visiteur"], $mois_visiteur);
 
                 $infos_visiteur = $pdo->getInfosUtilisateurByID($_POST["visiteur"]);
             }
             include("vues/v_listeMoisValiderFrais.php");
             include("vues/v_validerfrais.php");
+            break;
+        }
+    case "supprimerHorsForfait": {
+            $idFrais = $_GET["idFrais"];
+
+            $pdo->refuserFraisHorsForfait($idFrais);
         }
 }
