@@ -37,6 +37,52 @@ switch ($action) {
     case "supprimerHorsForfait": {
             $idFrais = $_GET["idFrais"];
 
-            $pdo->refuserFraisHorsForfait($idFrais);
+            $refuser = $pdo->refuserFraisHorsForfait($idFrais);
+            $visiteurs = $pdo->getAllVisiteurs();
+            $mois = $pdo->getAllMoisIsset();
+            $mois_visiteur = $_GET["mois"];
+
+            $etat = $pdo->getEtatFicheUtilisateur($_GET["visiteur"], $mois_visiteur);
+
+            if ($etat) {
+                $date_fiche = dateAnglaisVersFrancais($etat["datefiche"]);
+
+                $numAnnee_visiteur = substr($mois_visiteur, 0, 4);
+                $numMois_visiteur = substr($mois_visiteur, 4, 2);
+
+                $lesFraisForfait = $pdo->getLesFraisForfait($_GET["visiteur"], $mois_visiteur);
+
+                $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($_GET["visiteur"], $mois_visiteur);
+
+                $infos_visiteur = $pdo->getInfosUtilisateurByID($_GET["visiteur"]);
+            }
+            include("vues/v_listeMoisValiderFrais.php");
+            include("vues/v_validerfrais.php");
+        }
+    case "reporterHorsForfait": {
+            $idFrais = $_GET["idFrais"];
+
+            $reporter = $pdo->reporterFrais($idFrais);
+
+            $visiteurs = $pdo->getAllVisiteurs();
+            $mois = $pdo->getAllMoisIsset();
+            $mois_visiteur = $_GET["mois"];
+
+            $etat = $pdo->getEtatFicheUtilisateur($_GET["visiteur"], $mois_visiteur);
+
+            if ($etat) {
+                $date_fiche = dateAnglaisVersFrancais($etat["datefiche"]);
+
+                $numAnnee_visiteur = substr($mois_visiteur, 0, 4);
+                $numMois_visiteur = substr($mois_visiteur, 4, 2);
+
+                $lesFraisForfait = $pdo->getLesFraisForfait($_GET["visiteur"], $mois_visiteur);
+
+                $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($_GET["visiteur"], $mois_visiteur);
+
+                $infos_visiteur = $pdo->getInfosUtilisateurByID($_GET["visiteur"]);
+            }
+            include("vues/v_listeMoisValiderFrais.php");
+            include("vues/v_validerfrais.php");
         }
 }

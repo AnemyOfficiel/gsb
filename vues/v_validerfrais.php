@@ -1,4 +1,5 @@
-<?php if ($etat) { ?>
+<?php if ($_GET["action"] != "selectionnerMois") { ?>
+    <?php if($etat) { ?>
     <div class="corpsform">
         <fieldset>
             <legend>Fiche de frais du mois <?= $numMois_visiteur ?>/<?= $numAnnee_visiteur ?></legend>
@@ -20,7 +21,7 @@
                     foreach ($lesFraisForfait as $unFraisForfait) {
                         $quantite = $unFraisForfait['quantite'];
                     ?>
-                        <td><input type="text" value="<?= $quantite ?>" style="width: 93px;"></td>
+                        <td><input type="text" name="lesFrais[<?= $unFraisForfait["idfrais"] ?>]" value="<?= $quantite ?>" style="width: 93px;"></td>
                     <?php
                     }
                     ?>
@@ -48,8 +49,13 @@
                     <td><?php if($unFraisHorsForfait["suppr"]) { ?>REFUSE : <?php } ?><?= $unFraisHorsForfait["libelle"] ?></td>
                     <td><?= $unFraisHorsForfait["montant"] ?></td>
                     <?php if(!$unFraisHorsForfait["suppr"]) { ?>
-                    <td><a href="index.php?uc=validerfrais&action=supprimerHorsForfait&idFrais=<?= $unFraisHorsForfait["id"] ?>">Supprimer</a></td>
-                    <td><a href="index.php?uc=validerfrais&action=reporterHorsForfait&idFrais=<?= $unFraisHorsForfait["id"] ?>">Reporter</a></td>
+                        <?php if(isset($_GET["mois"]) AND isset($_GET["visiteur"])) { 
+                            $_POST["mois"] = $_GET["mois"];
+                            $_POST["visiteur"] = $_GET["visiteur"];
+                        ?>
+                            <?php } ?>
+                    <td><a href="index.php?uc=validerfrais&action=supprimerHorsForfait&idFrais=<?= $unFraisHorsForfait["id"] ?>&visiteur=<?= $_POST["visiteur"] ?>&mois=<?= $_POST["mois"] ?>">Supprimer</a></td>
+                    <td><a href="index.php?uc=validerfrais&action=reporterHorsForfait&idFrais=<?= $unFraisHorsForfait["id"] ?>&visiteur=<?= $_POST["visiteur"] ?>&mois=<?= $_POST["mois"] ?>">Reporter</a></td>
                     <?php } ?>
                 </tr>
                 <?php } ?>
@@ -60,5 +66,6 @@
     <div class="erreur">
         <p>Cette fiche n'existe pas pour ce visiteur et pour ce mois</p>
     </div>
+<?php } ?>
 <?php } ?>
 </div>
