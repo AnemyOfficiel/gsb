@@ -108,7 +108,8 @@ class PdoGsb
 		return $ligne;
 	}
 
-	public function reporterFrais($idFrais) {
+	public function reporterFrais($idFrais)
+	{
 		$infosFrais = $this->getFraisHorsForfaitById($idFrais);
 
 		$moisFrais = $infosFrais["mois"];
@@ -131,7 +132,7 @@ class PdoGsb
 
 		$newMois =  $updateAnnee . $updateMois;
 
-		if($this->dernierMoisSaisi($idVisiteur) != $newMois) {
+		if ($this->dernierMoisSaisi($idVisiteur) != $newMois) {
 			$this->creeNouvellesLignesFrais($idVisiteur, $newMois);
 		}
 		$req = "update lignefraishorsforfait set mois = $newMois WHERE id = $idFrais";
@@ -140,26 +141,27 @@ class PdoGsb
 	}
 
 
-	public function validerFiche($idVisiteur, $mois) {
-		$idVisiteur = $_POST["visiteur"];
-		$mois = $_POST["mois"];
-		$nb_justificatifs = $_POST["justificatifs"];
-		$lesFraisHorsForfait = $this->getLesFraisHorsForfait($idVisiteur, $mois);
-		$lesFraisForfait = $this->getLesFraisForfait($idVisiteur, $mois);
+	public function validerFiche($idVisiteur, $mois, $nb_justificatifs)
+	{
+		$lesFraisHorsForfaitFiche = $this->getLesFraisHorsForfait($idVisiteur, $mois, true);
+		$lesFraisForfaitFiche = $this->getLesFraisForfait($idVisiteur, $mois);
 		$totalFraisHorsForfait = 0;
 		$totalFraisForfait = 0;
+		$montantValide = 0;
 
-		foreach($lesFraisHorsForfait as $unFraisHorsForfait) {
+		foreach ($lesFraisHorsForfaitFiche as $unFraisHorsForfait) {
 			$totalFraisHorsForfait += $unFraisHorsForfait["montant"];
 		}
-		
-		foreach($lesFraisForfait as $unFraisForfait) {
+
+		foreach ($lesFraisForfaitFiche as $unFraisForfait) {
 			$totalFraisForfait += $unFraisForfait["quantite"] * $unFraisForfait["montant"];
 		}
 
-		
-		
+		$montantValide = $totalFraisForfait + $totalFraisHorsForfait;
 
+		$req = "update fichefrais set nbJustificatifs = $nb_justificatifs, montantValide = $montantValide, idEtat = 'VA', dateModif = NOW() WHERE idVisiteur = '$idVisiteur' AND mois = '$mois'";
+
+		PdoGsb::$monPdo->exec($req);
 	}
 
 	/**
@@ -173,10 +175,15 @@ class PdoGsb
 	 * @param $mois sous la forme aaaamm
 	 * @return tous les champs des lignes de frais hors forfait sous la forme d'un tableau associatif 
 	 */
-	public function getLesFraisHorsForfait($idVisiteur, $mois)
+	public function getLesFraisHorsForfait($idVisiteur, $mois, $suppr = false)
 	{
-		$req = "select * from lignefraishorsforfait where lignefraishorsforfait.idvisiteur ='$idVisiteur' 
+		if ($suppr == false) {
+			$req = "select * from lignefraishorsforfait where lignefraishorsforfait.idvisiteur ='$idVisiteur' 
+		and lignefraishorsforfait.mois = '$mois'";
+		} else {
+			$req = "select * from lignefraishorsforfait where lignefraishorsforfait.idvisiteur ='$idVisiteur' 
 		and lignefraishorsforfait.mois = '$mois' AND suppr != 1";
+		}
 		$res = PdoGsb::$monPdo->query($req);
 		$lesLignes = $res->fetchAll();
 		$nbLignes = count($lesLignes);

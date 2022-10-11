@@ -29,12 +29,14 @@
                             ?>
                         </tr>
                     </table>
+                    <?php if($etat["idEtat"] != "VA") { ?>
                     <div class="piedForm" style="width: 100%;border: 0;">
                         <p>
                             <input id="ok" type="submit" name="validerfrais" value="Valider" size="20">
                             <input id="annuler" type="reset" value="Effacer" size="20">
                         </p>
                     </div>
+                    <?php } ?>
                 </form>
                 <form action="index.php?uc=validerfrais&action=validerfiche" method="post">
                 <table class="listeLegere" style="width: 100%;border: 0;">
@@ -68,6 +70,7 @@
                         </tr>
                     <?php } ?>
                 </table>
+                <?php if($etat["idEtat"] != "VA") { ?>
                     <div class="piedForm" style="width: 100%;border: 0;">
                         <p>
                             <input id="ok" type="submit" name="validerfrais" value="Valider la fiche" size="20">
@@ -75,6 +78,7 @@
                             <input type="hidden" name="mois" value="<?= $mois_visiteur; ?>">
                         </p>
                     </div>
+                    <?php } ?>
                 </form>
             </fieldset>
         </div>

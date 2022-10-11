@@ -120,6 +120,31 @@ switch ($action) {
             break;
         }
         case "validerfiche": {
-            // print_r($pdo->validerFiche("a55", "202210"));
+            $visiteurs = $pdo->getAllVisiteurs();
+            $mois = $pdo->getAllMoisIsset();
+
+            $idVisiteur = $_POST["visiteur"];
+            $mois_visiteur = $_POST["mois"];
+            $nb_justificatifs = $_POST["justificatifs"];
+
+            $validerFiche = $pdo->validerFiche($idVisiteur, $mois_visiteur, $nb_justificatifs);
+
+            $etat = $pdo->getEtatFicheUtilisateur($idVisiteur, $mois_visiteur);
+
+            if ($etat) {
+                $date_fiche = dateAnglaisVersFrancais($etat["datefiche"]);
+
+                $numAnnee_visiteur = substr($mois_visiteur, 0, 4);
+                $numMois_visiteur = substr($mois_visiteur, 4, 2);
+
+                $lesFraisForfait = $pdo->getLesFraisForfait($idVisiteur, $mois_visiteur);
+
+                $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idVisiteur, $mois_visiteur);
+
+                $infos_visiteur = $pdo->getInfosUtilisateurByID($idVisiteur);
+            }
+            include("vues/v_listeMoisValiderFrais.php");
+            include("vues/v_validerfrais.php");
+            break;
         }
 }
