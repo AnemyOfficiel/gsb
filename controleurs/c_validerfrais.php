@@ -58,6 +58,7 @@ switch ($action) {
             }
             include("vues/v_listeMoisValiderFrais.php");
             include("vues/v_validerfrais.php");
+            break;
         }
     case "reporterHorsForfait": {
             $idFrais = $_GET["idFrais"];
@@ -84,5 +85,41 @@ switch ($action) {
             }
             include("vues/v_listeMoisValiderFrais.php");
             include("vues/v_validerfrais.php");
+            break;
+        }
+    case "validerMajFraisForfait": {
+            $visiteurs = $pdo->getAllVisiteurs();
+            $mois = $pdo->getAllMoisIsset();
+            $mois_visiteur = $_POST["mois_actuel"];
+            $mois_actuel = getMois(date("d/m/Y"));
+            $lesFrais = $_POST['lesFrais'];
+            
+            if (lesQteFraisValides($lesFrais)) {
+                $pdo->majFraisForfait($_POST["visiteurID"], $mois_actuel, $lesFrais);
+            } else {
+                ajouterErreur("Les valeurs des frais doivent être numériques");
+                include("vues/v_erreurs.php");
+            }
+
+            $etat = $pdo->getEtatFicheUtilisateur($_POST["visiteurID"], $mois_visiteur);
+
+            if ($etat) {
+                $date_fiche = dateAnglaisVersFrancais($etat["datefiche"]);
+
+                $numAnnee_visiteur = substr($mois_visiteur, 0, 4);
+                $numMois_visiteur = substr($mois_visiteur, 4, 2);
+
+                $lesFraisForfait = $pdo->getLesFraisForfait($_POST["visiteurID"], $mois_visiteur);
+
+                $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($_POST["visiteurID"], $mois_visiteur);
+
+                $infos_visiteur = $pdo->getInfosUtilisateurByID($_POST["visiteurID"]);
+            }
+            include("vues/v_listeMoisValiderFrais.php");
+            include("vues/v_validerfrais.php");
+            break;
+        }
+        case "validerfiche": {
+            // print_r($pdo->validerFiche("a55", "202210"));
         }
 }

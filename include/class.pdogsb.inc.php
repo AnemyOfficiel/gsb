@@ -108,9 +108,12 @@ class PdoGsb
 		return $ligne;
 	}
 
-	public function reporterFrais($idFrais)
-	{
-		$moisFrais = $this->getFraisHorsForfaitById($idFrais)["mois"];
+	public function reporterFrais($idFrais) {
+		$infosFrais = $this->getFraisHorsForfaitById($idFrais);
+
+		$moisFrais = $infosFrais["mois"];
+
+		$idVisiteur = $infosFrais["idVisiteur"];
 
 		$numAnnee = substr($moisFrais, 0, 4);
 		$numMois = substr($moisFrais, 4, 2);
@@ -128,9 +131,35 @@ class PdoGsb
 
 		$newMois =  $updateAnnee . $updateMois;
 
+		if($this->dernierMoisSaisi($idVisiteur) != $newMois) {
+			$this->creeNouvellesLignesFrais($idVisiteur, $newMois);
+		}
 		$req = "update lignefraishorsforfait set mois = $newMois WHERE id = $idFrais";
 
 		PdoGsb::$monPdo->exec($req);
+	}
+
+
+	public function validerFiche($idVisiteur, $mois) {
+		$idVisiteur = $_POST["visiteur"];
+		$mois = $_POST["mois"];
+		$nb_justificatifs = $_POST["justificatifs"];
+		$lesFraisHorsForfait = $this->getLesFraisHorsForfait($idVisiteur, $mois);
+		$lesFraisForfait = $this->getLesFraisForfait($idVisiteur, $mois);
+		$totalFraisHorsForfait = 0;
+		$totalFraisForfait = 0;
+
+		foreach($lesFraisHorsForfait as $unFraisHorsForfait) {
+			$totalFraisHorsForfait += $unFraisHorsForfait["montant"];
+		}
+		
+		foreach($lesFraisForfait as $unFraisForfait) {
+			$totalFraisForfait += $unFraisForfait["quantite"] * $unFraisForfait["montant"];
+		}
+
+		
+		
+
 	}
 
 	/**
@@ -147,7 +176,7 @@ class PdoGsb
 	public function getLesFraisHorsForfait($idVisiteur, $mois)
 	{
 		$req = "select * from lignefraishorsforfait where lignefraishorsforfait.idvisiteur ='$idVisiteur' 
-		and lignefraishorsforfait.mois = '$mois' ";
+		and lignefraishorsforfait.mois = '$mois' AND suppr != 1";
 		$res = PdoGsb::$monPdo->query($req);
 		$lesLignes = $res->fetchAll();
 		$nbLignes = count($lesLignes);
@@ -182,7 +211,7 @@ class PdoGsb
 	public function getLesFraisForfait($idVisiteur, $mois)
 	{
 		$req = "select fraisforfait.id as idfrais, fraisforfait.libelle as libelle, 
-		lignefraisforfait.quantite as quantite from lignefraisforfait inner join fraisforfait 
+		lignefraisforfait.quantite as quantite, fraisforfait.montant from lignefraisforfait inner join fraisforfait 
 		on fraisforfait.id = lignefraisforfait.idfraisforfait
 		where lignefraisforfait.idvisiteur ='$idVisiteur' and lignefraisforfait.mois='$mois' 
 		order by lignefraisforfait.idfraisforfait";
