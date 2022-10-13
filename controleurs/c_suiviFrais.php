@@ -5,11 +5,9 @@ $action = $_REQUEST['action'];
 
 switch ($action) {
     case "selectionnerMois": {
-            $visiteurs = $pdo->getAllVisiteurs();
-            $mois = $pdo->getAllMoisIsset();
+            $visiteursetmois = $pdo->getVisiteursAndMoisVA();
 
             
-
             include("vues/v_listeMoisSuivi.php");
             break;
         }

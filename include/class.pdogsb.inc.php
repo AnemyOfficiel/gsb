@@ -164,6 +164,17 @@ class PdoGsb
 		PdoGsb::$monPdo->exec($req);
 	}
 
+
+	public function getVisiteursAndMoisVA() {
+		$req = "SELECT ff.idVisiteur as idVisiteur, ff.mois as mois, u.prenom, u.nom FROM fichefrais as ff JOIN utilisateur as u ON ff.idVisiteur = u.id WHERE idEtat = 'VA' ORDER BY mois  DESC";
+
+		$result = PdoGsb::$monPdo->query($req);
+
+		$result = $result->fetchAll();
+
+		return $result;
+	}
+
 	/**
 	 * Retourne sous forme d'un tableau associatif toutes les lignes de frais hors forfait
 	 * concernées par les deux arguments

@@ -29,7 +29,7 @@
                             ?>
                         </tr>
                     </table>
-                    <?php if($etat["idEtat"] != "VA") { ?>
+                    <?php if($etat["idEtat"] == "CR") { ?>
                     <div class="piedForm" style="width: 100%;border: 0;">
                         <p>
                             <input id="ok" type="submit" name="validerfrais" value="Valider" size="20">
@@ -53,7 +53,7 @@
                             <td><?= $unFraisHorsForfait["date"] ?></td>
                             <td><?php if ($unFraisHorsForfait["suppr"]) { ?>REFUSE : <?php } ?><?= $unFraisHorsForfait["libelle"] ?></td>
                             <td><?= $unFraisHorsForfait["montant"] ?></td>
-                            <?php if (!$unFraisHorsForfait["suppr"]) { ?>
+                            <?php if (!$unFraisHorsForfait["suppr"] AND $etat["idEtat"] == "CR") { ?>
                                 <?php if (isset($_GET["mois"]) and isset($_GET["visiteur"])) {
                                     $_POST["mois"] = $_GET["mois"];
                                     $_POST["visiteur"] = $_GET["visiteur"];
@@ -70,7 +70,7 @@
                         </tr>
                     <?php } ?>
                 </table>
-                <?php if($etat["idEtat"] != "VA") { ?>
+                <?php if($etat["idEtat"] == "CR") { ?>
                     <div class="piedForm" style="width: 100%;border: 0;">
                         <p>
                             <input id="ok" type="submit" name="validerfrais" value="Valider la fiche" size="20">
