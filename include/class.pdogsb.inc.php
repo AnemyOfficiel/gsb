@@ -175,6 +175,14 @@ class PdoGsb
 		return $result;
 	}
 
+	public function rembourserFiche($idVisiteur, $mois) {
+		$req = "UPDATE fichefrais set idEtat = 'RB' WHERE idVisiteur = '$idVisiteur' AND mois = '$mois'";
+
+		$execution = PdoGsb::$monPdo->exec($req);
+
+		return $execution;
+	}
+
 	/**
 	 * Retourne sous forme d'un tableau associatif toutes les lignes de frais hors forfait
 	 * concernées par les deux arguments
