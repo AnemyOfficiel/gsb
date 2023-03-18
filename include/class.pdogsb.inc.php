@@ -166,7 +166,7 @@ class PdoGsb
 
 
 	public function getVisiteursAndMoisVA() {
-		$req = "SELECT ff.idVisiteur as idVisiteur, ff.mois as mois, u.prenom, u.nom FROM fichefrais as ff JOIN utilisateur as u ON ff.idVisiteur = u.id WHERE idEtat = 'VA' ORDER BY mois  DESC";
+		$req = "SELECT ff.idVisiteur as idVisiteur, ff.mois as mois, u.prenom, u.nom FROM fichefrais as ff JOIN utilisateur as u ON ff.idVisiteur = u.id WHERE idEtat = 'VA' ORDER BY mois DESC";
 
 		$result = PdoGsb::$monPdo->query($req);
 
